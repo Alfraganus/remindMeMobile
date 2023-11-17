@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:auto_route_integration/routes/guard/auth_guard.dart';
-
 import 'app_router.gr.dart';
+import 'guard/AuthGuard.dart';
 
 @AutoRouterConfig()
 class AppRouter extends $AppRouter {
