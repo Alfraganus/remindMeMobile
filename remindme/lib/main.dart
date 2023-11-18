@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:remindme/routes/app_router.dart';
 
 import 'constants.dart';
 import 'login/Screens/Welcome/welcome_screen.dart';
@@ -12,7 +13,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    AppRouter  appRouter= AppRouter();
+    return MaterialApp.router(
+      routerConfig: appRouter.config(),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Auth',
       theme: ThemeData(
@@ -39,7 +42,6 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide.none,
             ),
           )),
-      home: const WelcomeScreen(),
     );
   }
 }

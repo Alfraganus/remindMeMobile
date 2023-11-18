@@ -11,16 +11,7 @@ class AuthGuard extends AutoRouteGuard {
     if (loggedIn) {
       resolver.next(true);
     } else {
-      router.push(LoginRoute(onResult: (result) async {
-        // if true then go to desired route
-        if (result == true) {
-          // goto specified route
-          resolver.next(true);
-          // remove login screen from route
-          router.removeLast();
-        }
-        // else stay at login route
-      }));
+      router.push(WelcomeRoute());
     }
   }
 }

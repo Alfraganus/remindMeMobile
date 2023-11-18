@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+/// Normal Route
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
 import '../../Signup/signup_screen.dart';
@@ -27,7 +27,7 @@ class LoginAndSignupBtn extends StatelessWidget {
               );
             },
             child: Text(
-              "Login".toUpperCase(),
+              "Login".toUpperCase(),style: TextStyle(color:kPrimaryLightColor),
             ),
           ),
         ),
