@@ -5,8 +5,8 @@ class Background extends StatelessWidget {
   const Background({
     Key? key,
     required this.child,
-    this.topImage = "images/main_top.png",
-    this.bottomImage = "images/login_bottom.png",
+    this.topImage = "assets/images/main_top.png",
+    this.bottomImage = "assets/images/login_bottom.png",
   }) : super(key: key);
 
   final String topImage, bottomImage;
@@ -14,7 +14,7 @@ class Background extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         width: double.infinity,
         height: MediaQuery.of(context).size.height,
@@ -24,9 +24,14 @@ class Background extends StatelessWidget {
             Positioned(
               top: 0,
               left: 0,
-              child: Image.asset(
-                topImage,
-                width: 120,
+              child: Column(
+                children: [
+                  Image.asset(
+                    topImage,
+                    width: 120,
+                  ),
+
+                ],
               ),
             ),
             // Positioned(

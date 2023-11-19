@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
@@ -53,14 +54,36 @@ class LoginForm extends StatelessWidget {
             tag: "login_btn",
             child: ElevatedButton(
               onPressed: () async{
+                var authSend = null;
                 print(_loginController.text);
                 print(_passwordController.text);
-                await auth(
+                authSend = await auth(
                     "https://new.spector77.uz/login",
                     _loginController.text,
                     _passwordController.text
                 );
-                context.router.pushNamed('/alfra');
+                 if(authSend.statusCode == 200) {
+                   context.router.pushNamed('/alfra');
+                   showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return const AlertDialog(
+                         title: Text("Login is successful"),
+                         content: Text("You will be directed to application in a momement"),
+                       );
+                     },
+                   );
+                 } else {
+                   showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return const AlertDialog(
+                         title: Text("Login is not successful"),
+                         content: Text("You are not allowed!"),
+                       );
+                     },
+                   );
+                 }
               },
               child: Text(
                 "Login".toUpperCase(),
