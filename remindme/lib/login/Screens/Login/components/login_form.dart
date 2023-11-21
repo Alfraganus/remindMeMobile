@@ -64,15 +64,7 @@ class LoginForm extends StatelessWidget {
                 );
                  if(authSend.statusCode == 200) {
                    context.router.pushNamed('/alfra');
-                   showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                       return const AlertDialog(
-                         title: Text("Login is successful"),
-                         content: Text("You will be directed to application in a momement"),
-                       );
-                     },
-                   );
+
                  } else {
                    showDialog(
                      context: context,
