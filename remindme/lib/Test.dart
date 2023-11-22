@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +19,7 @@ class Test extends StatelessWidget {
           ElevatedButton(onPressed:() async{
             final SharedPreferences prefs = await SharedPreferences.getInstance();
             await prefs.setBool('logged_in', false);
+            context.router.pushNamed('/login');
           },
               child: Text('click to log out',style: TextStyle(color: Colors.white),)
           )

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:remindme/bloc/test_cubit.dart';
 /// Normal Route
 import '../../../constants.dart';
 import '../../Login/login_screen.dart';
@@ -26,15 +28,27 @@ class LoginAndSignupBtn extends StatelessWidget {
                 ),
               );
             },
-            child: Text(
-              "Login".toUpperCase(),style: TextStyle(color:kPrimaryLightColor),
+            child:BlocBuilder<TestCubit, TestInitial>(
+              builder: (context, state) {
+                return Text(
+                  state.authState.toString(),
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headline4,
+                );
+              },
             ),
+          /*  Text(
+              "Login".toUpperCase(),style: TextStyle(color:kPrimaryLightColor),
+            ),*/
           ),
         ),
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            Navigator.push(
+            // BlocProvider.of<TestCubit>(context).authIsSuccessfull();
+             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {

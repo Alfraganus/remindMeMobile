@@ -11,12 +11,13 @@
 import 'package:auto_route/auto_route.dart' as _i3;
 import 'package:remindme/login/Screens/Welcome/welcome_screen.dart' as _i2;
 import 'package:remindme/Test.dart' as _i1;
-
+import 'package:flutter/foundation.dart';
 abstract class $AppRouter extends _i3.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i3.PageFactory> pagesMap = {
+
     Test.name: (routeData) {
       return _i3.AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -48,6 +49,23 @@ class Test extends _i3.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.WelcomeScreen]
+
+class WelcomeRoute extends _i3.PageRouteInfo<void> {
+  final ValueChanged<bool>? onResult; // Add this line
+
+  WelcomeRoute({List<_i3.PageRouteInfo>? children, this.onResult}) // Add this line
+      : super(
+    WelcomeRoute.name,
+    initialChildren: children,
+  );
+
+  static const String name = 'WelcomeRoute';
+
+  static const _i3.PageInfo<void> page = _i3.PageInfo<void>(name);
+}
+
+
+/*
 class WelcomeRoute extends _i3.PageRouteInfo<void> {
   const WelcomeRoute({List<_i3.PageRouteInfo>? children})
       : super(
@@ -59,3 +77,4 @@ class WelcomeRoute extends _i3.PageRouteInfo<void> {
 
   static const _i3.PageInfo<void> page = _i3.PageInfo<void>(name);
 }
+*/

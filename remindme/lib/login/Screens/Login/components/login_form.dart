@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 
+import '../../../../bloc/test_cubit.dart';
 import '../../../components/already_have_an_account_acheck.dart';
 import '../../../constants.dart';
 import '../../../models/AuthModel.dart';
@@ -52,34 +54,45 @@ class LoginForm extends StatelessWidget {
           const SizedBox(height: defaultPadding),
           Hero(
             tag: "login_btn",
-            child: ElevatedButton(
+            child: ElevatedButton (
               onPressed: () async{
+                BlocProvider.of<TestCubit>(context).authIsPending();
                 var authSend = null;
-                print(_loginController.text);
-                print(_passwordController.text);
                 authSend = await auth(
                     "https://new.spector77.uz/login",
                     _loginController.text,
                     _passwordController.text
                 );
-                 if(authSend.statusCode == 200) {
-                   context.router.pushNamed('/alfra');
+                if(authSend.statusCode == 200) {
+                  BlocProvider.of<TestCubit>(context).authIsSuccessfull();
+                  context.router.pushNamed('/alfra');
 
-                 } else {
-                   showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                       return const AlertDialog(
-                         title: Text("Login is not successful"),
-                         content: Text("You are not allowed!"),
-                       );
-                     },
-                   );
-                 }
+                } else {
+                  BlocProvider.of<TestCubit>(context).authIsNotSuccessfull();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return const AlertDialog(
+                        title: Text("Login is not successful"),
+                        content: Text("You are not allowed!"),
+                      );
+                    },
+                  );
+                }
               },
-              child: Text(
-                "Login".toUpperCase(),
-                style: TextStyle(color: kPrimaryLightColor),
+              child: BlocBuilder<TestCubit, TestInitial>(
+                builder: (context, state) {
+                  if (state.authState == 'pending') {
+                    // Display a circular progress indicator while the state is pending
+                    return CircularProgressIndicator();
+                  } else {
+                    // Display the login button with the text "Login"
+                    return Text(
+                      "Login".toUpperCase(),
+                      style: TextStyle(color: kPrimaryLightColor),
+                    );
+                  }
+                },
               ),
             ),
           ),
