@@ -9,6 +9,6 @@ class AppRouter extends $AppRouter {
     /// Initial Route
     AutoRoute(path: '/alfraganusa', page:  Test.page),
     AutoRoute(path: '/', page:  Test.page, initial: true,guards: [AuthGuard()]),
-    AutoRoute(path: '/login', page:  WelcomeRoute.page)
+    AutoRoute(path: '/login', page:  WelcomeRoute.page,keepHistory: false)
   ];
 }

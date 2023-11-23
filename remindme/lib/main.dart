@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remindme/bloc/test_cubit.dart';
+import 'package:remindme/l10n/l10n.dart';
 import 'package:remindme/routes/app_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'constants.dart';
 import 'login/Screens/Welcome/welcome_screen.dart';
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         // Add more BlocProviders as needed
       ],
       child: MaterialApp.router(
+       supportedLocales: L10n.all,
+        locale: const Locale('uz'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         routerConfig: appRouter.config(),
         debugShowCheckedModeBanner: false,
         title: 'Flutter Auth',

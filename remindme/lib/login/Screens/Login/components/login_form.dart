@@ -65,8 +65,7 @@ class LoginForm extends StatelessWidget {
                 );
                 if(authSend.statusCode == 200) {
                   BlocProvider.of<TestCubit>(context).authIsSuccessfull();
-                  context.router.pushNamed('/alfra');
-
+                  context.router.pushNamed('/');
                 } else {
                   BlocProvider.of<TestCubit>(context).authIsNotSuccessfull();
                   showDialog(
