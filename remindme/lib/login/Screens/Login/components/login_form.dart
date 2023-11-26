@@ -65,7 +65,7 @@ class LoginForm extends StatelessWidget {
                 );
                 if(authSend.statusCode == 200) {
                   BlocProvider.of<TestCubit>(context).authIsSuccessfull();
-                  context.router.pushNamed('/');
+                  context.router.pushNamed('/notifications');
                 } else {
                   BlocProvider.of<TestCubit>(context).authIsNotSuccessfull();
                   showDialog(

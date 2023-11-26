@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:remindme/login/Screens/Login/components/login_form.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../app_router.gr.dart';
@@ -11,16 +12,8 @@ class AuthGuard extends AutoRouteGuard {
     if (loggedIn) {
       resolver.next(true);
     } else {
-      router.push(WelcomeRoute(onResult: (result) async {
-        // if true then go to desired route
-        if (result == true) {
-          // goto specified route
-          resolver.next(true);
-          // remove login screen from route
-          router.removeLast();
-        }
-        // else stay at login route
-      }));
+      // we redirect the user to our login page
+      router.push(WelcomeRoute());
     }
   }
-}
+} 
