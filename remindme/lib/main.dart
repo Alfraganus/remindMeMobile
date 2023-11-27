@@ -6,6 +6,7 @@ import 'package:remindme/l10n/l10n.dart';
 import 'package:remindme/routes/app_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'bloc/ColorChooserCubit.dart';
 import 'constants.dart';
 import 'login/Screens/Welcome/welcome_screen.dart';
 
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<BottomNavBarCubit>(
           create: (context) => BottomNavBarCubit(),
+        ),
+        BlocProvider<ColorChooserCubit>(
+          create: (context) => ColorChooserCubit(),
         ),
         // Add more BlocProviders as needed
       ],

@@ -13,7 +13,7 @@ class AddNotification extends StatelessWidget {
     return Scaffold(
       body: Stepper(
         type: StepperType.horizontal,
-        elevation: 0,
+        margin: EdgeInsets.zero,
         currentStep: 0,
         steps: [
           Step(title: Text("Choose color"), content: StepColor())
