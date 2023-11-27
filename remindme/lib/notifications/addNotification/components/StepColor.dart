@@ -34,9 +34,9 @@ class ColorOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool showIcon = false;
     final bottomNavBarCubit = BlocProvider.of<ColorChooserCubit>(context);
-
+    double screenHeight = MediaQuery.of(context).size.width;
+    double topPosition = screenHeight * 0.03;
     return BlocBuilder<ColorChooserCubit, ColorChooserState>(
       builder: (context, state) {
         bool isActive = state.selectedColor == Color;
@@ -68,24 +68,29 @@ class ColorOption extends StatelessWidget {
                       fit: BoxFit.cover, // Adjust the BoxFit property as needed
                     ),
                   ),
-                  if (isActive)
-                    Container(
-                        height: 50,
-                        margin: EdgeInsets.only(top: 0),
-                        decoration: BoxDecoration(
-                            color: HexColor(state.selectedColor.toString()),
-                            border: Border.all(
-                              color: HexColor(state.selectedColor.toString()),
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Image.asset(
-                          'assets/icons/tick-icon-transparent-free-png.webp',
-                          fit: BoxFit
-                              .cover, // Adjust the BoxFit property as needed
-                        )),
+
                 ],
               ),
+              if (isActive)
+                Positioned(
+                  bottom: 0,
+                  left: topPosition,
+                  child: Container(
+                      height: 50,
+                      margin: EdgeInsets.only(top: 0),
+                      decoration: BoxDecoration(
+                          color: HexColor(state.selectedColor.toString()),
+                          border: Border.all(
+                            color: HexColor(state.selectedColor.toString()),
+                          ),
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(50))),
+                      child: Image.asset(
+                        'assets/icons/tick-icon-transparent-free-png.webp',
+                        fit: BoxFit
+                            .cover, // Adjust the BoxFit property as needed
+                      )),
+                ),
             ],
           ),
         );

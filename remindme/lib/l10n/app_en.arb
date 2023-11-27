@@ -3,5 +3,8 @@
 "@language":{
 "description":"the current language"
 },
-"helloworld":"Hello world"
+"color_choose":"Choose color",
+"upcoming_events":"Upcoming events",
+"add_notification":"Add notification",
+"event_history":"Event history"
 }

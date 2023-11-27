@@ -3,5 +3,9 @@
 "@language":{
 "description":"hozirgi kuchli til"
 },
-"helloworld":"salom dunyo"
+"helloworld":"salom dunyo",
+"color_choose":"Rang tanlash",
+"upcoming_events":"Kutilayotgan hodisalar",
+"add_notification":"Yangi eslatma",
+"event_history":"Eslatmalar tarixi"
 }
