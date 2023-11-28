@@ -42,7 +42,7 @@ class ColorOption extends StatelessWidget {
         bool isActive = state.selectedColor == Color;
         return InkWell(
           onTap: () {
-            print(Color);
+            print(Color); 
             bottomNavBarCubit.changeSelectedColor(Color);
           },
           child: Stack(

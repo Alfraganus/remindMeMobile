@@ -2,6 +2,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:remindme/notifications/addNotification/components/StepColor.dart';
+import 'package:remindme/notifications/addNotification/components/StepTaskTitle.dart';
 import '../../BottomNavigationBar.dart';
 
 @RoutePage()
@@ -54,7 +55,7 @@ class _AddNotificationState extends State<AddNotification> {
           ),
           Step(
               title: Text("Choose time"),
-              content: Text("Hello world"),
+              content:StepTitle(),
               isActive: currentStep >= 1,
               state:currentStep >= 2 ? StepState.complete : StepState.disabled
           )
