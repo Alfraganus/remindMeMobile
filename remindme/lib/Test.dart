@@ -15,6 +15,7 @@ class Test extends StatelessWidget {
       appBar: AppBar(
         title: Text('current language is :'+AppLocalizations.of(context)!.language),
       ),
+      resizeToAvoidBottomInset: true,
       body: Column(
         children: [
           Text("Hello world"),

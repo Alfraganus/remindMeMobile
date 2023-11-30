@@ -10,11 +10,7 @@ class StepTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Note(),
-      ],
-    );
+    return  Note();
   }
 }
 
@@ -27,46 +23,11 @@ class Note extends StatefulWidget {
 }
 
 class _NoteState extends State<Note> {
-  late FocusNode _focusNode;
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    // Dispose the FocusNode only if it's not disposed yet
-    if (!_focusNode.hasFocus) {
-      _focusNode.dispose();
-    }
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
-  void handleTap() {
-    // Request focus on the hidden TextField
-    if (_focusNode != null && !_focusNode.hasFocus) {
-      FocusScope.of(context).requestFocus(_focusNode);
-    }
-    FocusScope.of(context).requestFocus(_focusNode);
-  }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.width;
-    return  RawKeyboardListener(
-      focusNode: _focusNode,
-      onKey: (RawKeyEvent event) {
-        if (_focusNode == null || !_focusNode.hasFocus) {
-          return;
-        }
-        if (event.runtimeType == RawKeyDownEvent &&
-            event.logicalKey == LogicalKeyboardKey.enter) {
-        }
-      },
+    return SingleChildScrollView(
       child: Stack(
         children: [
           Column(
@@ -84,7 +45,18 @@ class _NoteState extends State<Note> {
               ),
               SizedBox(height: 20),
               GestureDetector(
-                onTap: handleTap,
+                onTap:() {
+                  showModalBottomSheet(
+                    context: context,
+                    // isScrollControlled: true,
+                    builder: (BuildContext context) {
+                      return YourBottomModalContent();
+                    },
+                  );
+      
+                  // Trigger the keyboard to open
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
                 child: Row(
                   children: [
                     Container(
@@ -123,7 +95,7 @@ class _NoteState extends State<Note> {
                   ],
                 ),
               ),
-
+      
               SizedBox(
                 height: 10,
               ),
@@ -138,6 +110,67 @@ class _NoteState extends State<Note> {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class YourBottomModalContent extends StatefulWidget {
+  @override
+  _YourBottomModalContentState createState() =>
+      _YourBottomModalContentState();
+}
+
+class _YourBottomModalContentState extends State<YourBottomModalContent> {
+  TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Container(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 16),
+            GestureDetector(
+              onTap: () {
+                // Ensure the text field keeps focus when tapped
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Builder(
+                builder: (context) {
+                  // Wrap TextField with Builder to get the correct context
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: TextField(
+                      autofocus: true,
+                      controller: _textEditingController,
+                      decoration: new InputDecoration.collapsed(
+                          hintText: 'eh: Meeting with cline'
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                // Add any logic here when the user taps a button in the modal
+                print('Task: ${_textEditingController.text}');
+                Navigator.pop(context); // Close the modal
+              },
+              child: Text('Save'),
+            ),
+          ],
+        ),
       ),
     );
   }

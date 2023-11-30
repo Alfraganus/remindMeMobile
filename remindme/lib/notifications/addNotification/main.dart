@@ -38,29 +38,28 @@ class _AddNotificationState extends State<AddNotification> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stepper(
-        type: StepperType.horizontal,
-        margin: EdgeInsets.zero,
-        currentStep: currentStep,
-        onStepContinue: continueStep,
-        onStepCancel: stepStep,
-        onStepTapped:onStepTapped,
-        steps: [
-          Step(
-              title: Text("Choose color"),
-              content: StepColor(),
-              isActive: currentStep >= 0,
-               state:currentStep >= 1 ? StepState.complete : StepState.disabled
-          ),
-          Step(
-              title: Text("Choose time"),
-              content:StepTitle(),
-              isActive: currentStep >= 1,
-              state:currentStep >= 2 ? StepState.complete : StepState.disabled
-          )
-        ],
-      ),
+    return Stepper(
+
+      type: StepperType.horizontal,
+      margin: EdgeInsets.zero,
+      currentStep: /*currentStep*/ 1,
+      onStepContinue: continueStep,
+      onStepCancel: stepStep,
+      onStepTapped:onStepTapped,
+      steps: [
+        Step(
+            title: Text("Choose color"),
+            content: StepColor(),
+            isActive: currentStep >= 0,
+            state:currentStep >= 1 ? StepState.complete : StepState.disabled
+        ),
+        Step(
+            title: Text("Choose time"),
+            content:StepTitle(),
+            isActive: currentStep >= 1,
+            state:currentStep >= 2 ? StepState.complete : StepState.disabled
+        )
+      ],
     );
   }
 }

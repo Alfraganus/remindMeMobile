@@ -22,6 +22,7 @@ class NotificationList extends StatelessWidget {
           appBar: AppBar(
             title: Text("Notification list"),
           ),
+          resizeToAvoidBottomInset: true,
           body: Center(
             child: bottomWidgetList.elementAt(state.WidgetIndex),
           ),

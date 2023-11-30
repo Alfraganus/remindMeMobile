@@ -40,12 +40,6 @@ class CommonBottomNavigationBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
 
- final List<Widget> _widgetOptions = <Widget>[
-    Test(),
-    LoginScreen(),
-    WelcomeScreen(),
-  ];
-
   CommonBottomNavigationBar({required this.currentIndex, required this.onTap});
 
   @override
