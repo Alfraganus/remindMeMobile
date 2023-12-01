@@ -153,7 +153,7 @@ class _YourBottomModalContentState extends State<YourBottomModalContent> {
                       autofocus: true,
                       controller: _textEditingController,
                       decoration: new InputDecoration.collapsed(
-                          hintText: 'eh: Meeting with cline'
+                          hintText: 'eg: Meeting with client'
                       ),
                     ),
                   );
