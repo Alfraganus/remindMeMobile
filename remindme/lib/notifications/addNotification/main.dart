@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remindme/notifications/addNotification/components/StepColor.dart';
 import 'package:remindme/notifications/addNotification/components/StepTaskTitle.dart';
 import '../../BottomNavigationBar.dart';
+import 'components/StepScheduler.dart';
 
 @RoutePage()
 class AddNotification extends StatefulWidget {
@@ -39,10 +40,9 @@ class _AddNotificationState extends State<AddNotification> {
   @override
   Widget build(BuildContext context) {
     return Stepper(
-
       type: StepperType.horizontal,
       margin: EdgeInsets.zero,
-      currentStep: /*currentStep*/ 1,
+      currentStep: /*currentStep*/ 2 ,
       onStepContinue: continueStep,
       onStepCancel: stepStep,
       onStepTapped:onStepTapped,
@@ -58,6 +58,12 @@ class _AddNotificationState extends State<AddNotification> {
             content:StepTitle(),
             isActive: currentStep >= 1,
             state:currentStep >= 2 ? StepState.complete : StepState.disabled
+        ),
+        Step(
+            title: Text("Choose time"),
+            content:StepSchedular(),
+            isActive: currentStep >= 2,
+            state:currentStep >= 3 ? StepState.complete : StepState.disabled
         )
       ],
     );

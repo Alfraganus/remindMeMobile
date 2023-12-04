@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remindme/bloc/BottomNavBarCubit.dart';
+import 'package:remindme/bloc/EventFormCubit.dart';
 import 'package:remindme/bloc/test_cubit.dart';
 import 'package:remindme/l10n/l10n.dart';
 import 'package:remindme/routes/app_router.dart';
@@ -32,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<ColorChooserCubit>(
           create: (context) => ColorChooserCubit(),
+        ),
+        BlocProvider<EventFormCubit>(
+          create: (context) => EventFormCubit(),
         ),
         // Add more BlocProviders as needed
       ],

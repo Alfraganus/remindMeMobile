@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:remindme/bloc/ColorChooserCubit.dart';
+import 'package:remindme/bloc/EventFormCubit.dart';
 
 class StepTitle extends StatelessWidget {
   const StepTitle({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Note();
+    return Note();
   }
 }
-
 
 class Note extends StatefulWidget {
   const Note({Key? key}) : super(key: key);
@@ -23,7 +23,6 @@ class Note extends StatefulWidget {
 }
 
 class _NoteState extends State<Note> {
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.width;
@@ -38,14 +37,14 @@ class _NoteState extends State<Note> {
                   color: HexColor("#24A19C"),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(15.0),
-                    topRight: Radius.circular(
-                        15.0), // Adjust the radius as needed
+                    topRight:
+                        Radius.circular(15.0), // Adjust the radius as needed
                   ),
                 ),
               ),
               SizedBox(height: 20),
               GestureDetector(
-                onTap:() {
+                onTap: () {
                   showModalBottomSheet(
                     context: context,
                     // isScrollControlled: true,
@@ -53,8 +52,6 @@ class _NoteState extends State<Note> {
                       return YourBottomModalContent();
                     },
                   );
-      
-                  // Trigger the keyboard to open
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
                 child: Row(
@@ -71,8 +68,8 @@ class _NoteState extends State<Note> {
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(5),
-                            child: Image.asset(
-                                "assets/icons/icons8-plus-30.png"),
+                            child:
+                                Image.asset("assets/icons/icons8-plus-30.png"),
                           ),
                           width: 50,
                           height: 50,
@@ -85,17 +82,20 @@ class _NoteState extends State<Note> {
                       child: Container(
                         width: 100,
                         // color: HexColor('#24A19C'),
-                        child: Text(
-                          "Tap plus to create a new task",
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                        child: BlocBuilder<EventFormCubit, EventForm>(
+                          builder: (context, state) {
+                            return Text(
+                              state.title.toString(),
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            );
+                          },
                         ),
                       ),
                     )
                   ],
                 ),
               ),
-      
               SizedBox(
                 height: 10,
               ),
@@ -117,16 +117,38 @@ class _NoteState extends State<Note> {
 
 class YourBottomModalContent extends StatefulWidget {
   @override
-  _YourBottomModalContentState createState() =>
-      _YourBottomModalContentState();
+  _YourBottomModalContentState createState() => _YourBottomModalContentState();
 }
 
 class _YourBottomModalContentState extends State<YourBottomModalContent> {
   TextEditingController _textEditingController = TextEditingController();
+  FocusNode _focusNode = FocusNode();
+  ValueNotifier<String> _taskText = ValueNotifier<String>("");
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a listener to the focus node to detect when the keyboard is closed
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        if(_textEditingController.text.isNotEmpty) {
+          BlocProvider.of<EventFormCubit>(context)
+              .setTitle(_textEditingController.text);
+        }
+      }
+    });
+
+    _textEditingController.addListener(() {
+      _taskText.value = _textEditingController.text;
+    });
+  }
 
   @override
   void dispose() {
     _textEditingController.dispose();
+    _focusNode.dispose();
+    _taskText.dispose();
     super.dispose();
   }
 
@@ -142,32 +164,49 @@ class _YourBottomModalContentState extends State<YourBottomModalContent> {
             GestureDetector(
               onTap: () {
                 // Ensure the text field keeps focus when tapped
-                FocusScope.of(context).requestFocus(FocusNode());
+                FocusScope.of(context).requestFocus(_focusNode);
               },
-              child: Builder(
-                builder: (context) {
-                  // Wrap TextField with Builder to get the correct context
-                  return Padding(
-                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                    child: TextField(
-                      autofocus: true,
-                      controller: _textEditingController,
-                      decoration: new InputDecoration.collapsed(
-                          hintText: 'eg: Meeting with client'
-                      ),
-                    ),
-                  );
-                },
+              child: Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: TextField(
+                  autofocus: true,
+                  controller: _textEditingController,
+                  focusNode: _focusNode,
+                  decoration: InputDecoration.collapsed(
+                    hintText: 'eg: Meeting with client',
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                // Add any logic here when the user taps a button in the modal
-                print('Task: ${_textEditingController.text}');
-                Navigator.pop(context); // Close the modal
+            BlocBuilder<EventFormCubit, EventForm>(
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () {
+                    // Add any logic here when the user taps a button in the modal
+                    print('Task: ${_textEditingController.text}');
+                    BlocProvider.of<EventFormCubit>(context)
+                        .setTitle(_textEditingController.text);
+                    Navigator.pop(context); // Close the modal
+                  },
+                  child: Text('Save'),
+                );
               },
-              child: Text('Save'),
+            ),
+            SizedBox(height: 16),
+            // Display the entered text below the Save button
+            ValueListenableBuilder<String>(
+              valueListenable: _taskText,
+              builder: (context, taskText, _) {
+                return Text(
+                  taskText,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                );
+              },
             ),
           ],
         ),
