@@ -10,6 +10,15 @@ class EventFormCubit extends Cubit<EventForm> {
   void setNewTime(List<String?> time) {
     emit(EventForm(dates: time));
   }
+  void removeTimeByIndex(int index) {
+    if (index >= 0 && index < state.dates.length) {
+      List<String?> updatedDates = List.from(state.dates);
+      updatedDates.removeAt(index);
+      emit(EventForm(dates: updatedDates));
+    }
+  }
+
+
 }
 
 class EventForm {

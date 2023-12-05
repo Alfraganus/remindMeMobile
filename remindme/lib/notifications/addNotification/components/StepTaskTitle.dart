@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:remindme/bloc/ColorChooserCubit.dart';
 import 'package:remindme/bloc/EventFormCubit.dart';
 
 class StepTitle extends StatelessWidget {
@@ -128,7 +127,6 @@ class _YourBottomModalContentState extends State<YourBottomModalContent> {
   @override
   void initState() {
     super.initState();
-
     // Add a listener to the focus node to detect when the keyboard is closed
     _focusNode.addListener(() {
       if (!_focusNode.hasFocus) {
