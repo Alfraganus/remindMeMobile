@@ -21,9 +21,17 @@ class _SchedularState extends State<StepSchedular> {
         return Column(
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Yangi vaqt kiritish"),
-                Expanded(
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: Text("Yangi vaqt kiritish",
+                    style: TextStyle(
+                      fontSize: 25
+                    ),)
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
                   child: GestureDetector(
                     onTap: () async {
                       var time = await showTimePicker(

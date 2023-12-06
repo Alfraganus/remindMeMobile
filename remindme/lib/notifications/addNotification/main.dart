@@ -18,7 +18,7 @@ class _AddNotificationState extends State<AddNotification> {
   int currentStep = 0;
 
   continueStep() {
-    if (currentStep < 1) {
+    if (currentStep < 2) {
       setState(() {
         currentStep = currentStep + 1;
       });
@@ -40,28 +40,29 @@ class _AddNotificationState extends State<AddNotification> {
   @override
   Widget build(BuildContext context) {
     return Stepper(
+      physics: ScrollPhysics(),
       type: StepperType.horizontal,
-      margin: EdgeInsets.zero,
+      // margin: EdgeInsets.zero,
       currentStep: /*currentStep*/ 2 ,
       onStepContinue: continueStep,
       onStepCancel: stepStep,
       onStepTapped:onStepTapped,
       steps: [
         Step(
-            title: Text("Choose color"),
-            content: StepColor(),
+            title: Text("Color"),
+            content: SingleChildScrollView(child: StepColor()),
             isActive: currentStep >= 0,
             state:currentStep >= 1 ? StepState.complete : StepState.disabled
         ),
         Step(
-            title: Text("Choose time"),
-            content:StepTitle(),
+            title: Text("Title"),
+            content:SingleChildScrollView(child: StepTitle()),
             isActive: currentStep >= 1,
             state:currentStep >= 2 ? StepState.complete : StepState.disabled
         ),
         Step(
-            title: Text("Choose time"),
-            content:StepSchedular(),
+            title: Text("Timing"),
+            content:SingleChildScrollView(child: StepSchedular()),
             isActive: currentStep >= 2,
             state:currentStep >= 3 ? StepState.complete : StepState.disabled
         )
