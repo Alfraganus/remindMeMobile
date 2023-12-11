@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 import '../../../bloc/EventFormCubit.dart';
 
 class StepSchedular extends StatefulWidget {
@@ -20,16 +22,17 @@ class _SchedularState extends State<StepSchedular> {
       builder: (context, state) {
         return Column(
           children: [
+            RepeatDaily(),
+            MultpleDateChooser(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Align(
                     alignment: Alignment.centerRight,
-                    child: Text("Yangi vaqt kiritish",
-                    style: TextStyle(
-                      fontSize: 25
-                    ),)
-                ),
+                    child: Text(
+                      "Yangi vaqt kiritish",
+                      style: TextStyle(fontSize: 25),
+                    )),
                 Align(
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
@@ -44,10 +47,12 @@ class _SchedularState extends State<StepSchedular> {
                               timePickerTheme: _timePickerTheme,
                               textButtonTheme: TextButtonThemeData(
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.orange),
-                                  foregroundColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.white),
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => Colors.orange),
+                                  foregroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => Colors.white),
                                   overlayColor: MaterialStateColor.resolveWith(
                                       (states) => Colors.deepOrange),
                                 ),
@@ -59,8 +64,11 @@ class _SchedularState extends State<StepSchedular> {
                       );
                       if (time != null) {
                         List<String?>? currentList = state.dates;
-                        currentList.add(time.hour.toString()+" : "+time.minute.toString());
-                        BlocProvider.of<EventFormCubit>(context).setNewTime(currentList);
+                        currentList.add(time.hour.toString() +
+                            " : " +
+                            time.minute.toString());
+                        BlocProvider.of<EventFormCubit>(context)
+                            .setNewTime(currentList);
                       }
                     },
                     child: Icon(
@@ -77,40 +85,43 @@ class _SchedularState extends State<StepSchedular> {
                 shrinkWrap: true,
                 itemCount: state.dates.length,
                 itemBuilder: (context, index) {
-                  int timeOrder =  index + 1;
-                  var date = state.dates[index] ?? 'N/A'; // Provide a default value if null
-                  return  Container(
+                  int timeOrder = index + 1;
+                  var date = state.dates[index] ??
+                      'N/A'; // Provide a default value if null
+                  return Container(
                     alignment: Alignment.center,
                     child: Column(
                       children: [
-                      Stack(
-                        children: [
-                          Container(
-                            height: 60,
-                            decoration: new BoxDecoration(
-                              color: HexColor("#24A19C"),
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15.0),
-                                topRight:
-                                Radius.circular(15.0), // Adjust the radius as needed
+                        Stack(
+                          children: [
+                            Container(
+                              height: 60,
+                              decoration: new BoxDecoration(
+                                color: HexColor("#24A19C"),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15.0),
+                                  topRight: Radius.circular(
+                                      15.0), // Adjust the radius as needed
+                                ),
                               ),
                             ),
-                          ),
-                          Positioned.fill(
-                            child: Align(
-                             alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: EdgeInsets.only(left: 15),
-                                child: Text('${timeOrder}-vaqt', style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold
-                                ),),
+                            Positioned.fill(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    '${timeOrder}-vaqt',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      ),
+                            )
+                          ],
+                        ),
                         SizedBox(height: 20),
                         Row(
                           children: [
@@ -122,11 +133,12 @@ class _SchedularState extends State<StepSchedular> {
                                 child: BlocBuilder<EventFormCubit, EventForm>(
                                   builder: (context, state) {
                                     return Padding(
-                                      padding:EdgeInsets.only(left: 15),
+                                      padding: EdgeInsets.only(left: 15),
                                       child: Text(
                                         date,
                                         style: TextStyle(
-                                            fontSize: 20, fontWeight: FontWeight.bold),
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                     );
                                   },
@@ -134,8 +146,9 @@ class _SchedularState extends State<StepSchedular> {
                               ),
                             ),
                             GestureDetector(
-                              onTap :() {
-                                BlocProvider.of<EventFormCubit>(context).removeTimeByIndex(index);
+                              onTap: () {
+                                BlocProvider.of<EventFormCubit>(context)
+                                    .removeTimeByIndex(index);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.only(right: 20),
@@ -161,6 +174,117 @@ class _SchedularState extends State<StepSchedular> {
           ],
         );
       },
+    );
+  }
+}
+
+class MultpleDateChooser extends StatelessWidget {
+  const MultpleDateChooser({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Oraliq kun tanlarda",
+          style: TextStyle(fontSize: 18),
+        ),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              // isScrollControlled: true,
+              builder: (BuildContext context) {
+               return  SfDateRangePicker(
+                 view: DateRangePickerView.month,
+                 selectionMode: DateRangePickerSelectionMode.multiple,
+                 // initialSelectedDate: selectedDate,
+                 onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                   // Handle date selection changes if needed
+                   print(args.value);
+                 },
+               );
+              },
+            );
+            // FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Text("Tap me"),
+        ),
+      ],
+    );
+  }
+
+  void _showDatePickerPopup(BuildContext context) async {
+    DateTime selectedDate =
+        DateTime.now(); // Set initial selected date if needed
+
+    await showDialog(
+      context: context,
+      builder: (BuildContext builderContext) {
+        return AlertDialog(
+          title: Text('Select Date'),
+          content: Container(
+            height: 500, // Adjust the height as needed
+            width: MediaQuery.of(context).size.width, // Set a fixed width
+            child: SfDateRangePicker(
+              view: DateRangePickerView.month,
+              selectionMode: DateRangePickerSelectionMode.multiple,
+              initialSelectedDate: selectedDate,
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                // Handle date selection changes if needed
+                print(args.value);
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(builderContext).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class RepeatDaily extends StatelessWidget {
+  const RepeatDaily({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Har kuni takrorlansin",
+          style: TextStyle(fontSize: 18),
+        ),
+        ToggleSwitch(
+          customWidths: [90.0, 50.0],
+          cornerRadius: 20.0,
+          activeBgColors: [
+            [Colors.cyan],
+            [Colors.redAccent]
+          ],
+          activeFgColor: Colors.white,
+          inactiveBgColor: Colors.grey,
+          inactiveFgColor: Colors.white,
+          totalSwitches: 2,
+          labels: ['XA', 'Yo\'q'],
+          // icons: [null, FontAwesomeIcons.times],
+          onToggle: (index) {
+            print('switched to: $index');
+          },
+        ),
+      ],
     );
   }
 }

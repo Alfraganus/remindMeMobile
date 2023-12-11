@@ -45,6 +45,8 @@ dependencies:
   flutter_bloc: ^8.1.3
   hexcolor: ^3.0.1
   omni_datetime_picker: ^1.0.9
+  toggle_switch: ^2.1.0
+  syncfusion_flutter_datepicker: ^23.2.7
 
 dev_dependencies:
   flutter_localizations:

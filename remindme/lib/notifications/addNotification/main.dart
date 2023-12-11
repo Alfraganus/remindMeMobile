@@ -40,7 +40,7 @@ class _AddNotificationState extends State<AddNotification> {
   @override
   Widget build(BuildContext context) {
     return Stepper(
-      physics: ScrollPhysics(),
+      // physics: ScrollPhysics(),
       type: StepperType.horizontal,
       // margin: EdgeInsets.zero,
       currentStep: /*currentStep*/ 2 ,
@@ -62,7 +62,7 @@ class _AddNotificationState extends State<AddNotification> {
         ),
         Step(
             title: Text("Timing"),
-            content:SingleChildScrollView(child: StepSchedular()),
+            content:StepSchedular(),
             isActive: currentStep >= 2,
             state:currentStep >= 3 ? StepState.complete : StepState.disabled
         )
