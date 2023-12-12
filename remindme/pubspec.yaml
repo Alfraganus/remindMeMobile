@@ -47,6 +47,7 @@ dependencies:
   omni_datetime_picker: ^1.0.9
   toggle_switch: ^2.1.0
   syncfusion_flutter_datepicker: ^23.2.7
+  weekday_selector: ^1.1.0
 
 dev_dependencies:
   flutter_localizations:

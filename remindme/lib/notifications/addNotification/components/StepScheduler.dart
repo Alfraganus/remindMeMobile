@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:weekday_selector/weekday_selector.dart';
 import '../../../bloc/EventFormCubit.dart';
 
 class StepSchedular extends StatefulWidget {
@@ -23,7 +24,11 @@ class _SchedularState extends State<StepSchedular> {
         return Column(
           children: [
             RepeatDaily(),
+            SizedBox(height: 20),
             MultpleDateChooser(),
+            SizedBox(height: 20),
+            MultipleWeekDateChooser(),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -198,57 +203,129 @@ class MultpleDateChooser extends StatelessWidget {
               context: context,
               // isScrollControlled: true,
               builder: (BuildContext context) {
-               return  SfDateRangePicker(
-                 view: DateRangePickerView.month,
-                 selectionMode: DateRangePickerSelectionMode.multiple,
-                 // initialSelectedDate: selectedDate,
-                 onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                   // Handle date selection changes if needed
-                   print(args.value);
-                 },
-               );
+                return  ListView(
+                  children: [
+                    Container(
+                      height: 400, // Adjust the height as needed
+                      width: MediaQuery.of(context).size.width, // Set a fixed width
+                      child: SfDateRangePicker(
+                        view: DateRangePickerView.month,
+                        selectionMode: DateRangePickerSelectionMode.multiple,
+                        onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                          // Handle date selection changes if needed
+                          print(args.value);
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle button press
+                      },
+                      child: Text("Choose the days", style: TextStyle(
+                          color: Colors.white
+                      ),),
+                    ),
+                  ],
+                );
               },
             );
             // FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Text("Tap me"),
+          child: Row(
+            children: [
+              Text("Tanlash"),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Icon(
+                  Icons.calendar_month_outlined,
+                  size: 40,
+                  color: Colors.green,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  void _showDatePickerPopup(BuildContext context) async {
-    DateTime selectedDate =
-        DateTime.now(); // Set initial selected date if needed
+}
 
-    await showDialog(
-      context: context,
-      builder: (BuildContext builderContext) {
-        return AlertDialog(
-          title: Text('Select Date'),
-          content: Container(
-            height: 500, // Adjust the height as needed
-            width: MediaQuery.of(context).size.width, // Set a fixed width
-            child: SfDateRangePicker(
-              view: DateRangePickerView.month,
-              selectionMode: DateRangePickerSelectionMode.multiple,
-              initialSelectedDate: selectedDate,
-              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                // Handle date selection changes if needed
-                print(args.value);
+
+class MultipleWeekDateChooser extends StatefulWidget {
+  const MultipleWeekDateChooser({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  _MultipleWeekDateChooserState createState() => _MultipleWeekDateChooserState();
+}
+
+class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
+  List<bool> values = List.filled(7, false);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Xafta kunlarida",
+          style: TextStyle(fontSize: 18),
+        ),
+        GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return ListView(
+                      children: [
+                        Container(
+                          height: 200,
+                          width: MediaQuery.of(context).size.width,
+                          child: WeekdaySelector(
+                            onChanged: (int day) {
+                              setState(() {
+                                final index = day % 7;
+                                values[index] = !values[index];
+                              });
+                            },
+                            values: values,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Handle button press
+                          },
+                          child: Text(
+                            "Choose weekdays",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
-            ),
+            );
+          },
+          child: Row(
+            children: [
+              Text("Tanlash"),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Icon(
+                  Icons.calendar_month_outlined,
+                  size: 40,
+                  color: Colors.green,
+                ),
+              ),
+            ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(builderContext).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
+        ),
+      ],
     );
   }
 }
@@ -288,6 +365,10 @@ class RepeatDaily extends StatelessWidget {
     );
   }
 }
+
+
+
+
 
 final _timePickerTheme = TimePickerThemeData(
   backgroundColor: Colors.blueGrey,
