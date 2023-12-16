@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:remindme/bloc/EventFormCubit.dart';
+import '../../../services/saveSchedularStepper.dart';
 
 class StepTitle extends StatelessWidget {
   const StepTitle({Key? key}) : super(key: key);
@@ -186,6 +187,7 @@ class _YourBottomModalContentState extends State<YourBottomModalContent> {
                     print('Task: ${_textEditingController.text}');
                     BlocProvider.of<EventFormCubit>(context)
                         .setTitle(_textEditingController.text);
+                    SaveSchedular.saveSchedular('title', _textEditingController.text);
                     Navigator.pop(context); // Close the modal
                   },
                   child: Text('Save'),

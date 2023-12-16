@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:remindme/bloc/ColorChooserCubit.dart';
+import 'package:remindme/services/saveSchedularStepper.dart';
 
 class StepColor extends StatelessWidget {
   const StepColor({Key? key}) : super(key: key);
@@ -42,8 +43,9 @@ class ColorOption extends StatelessWidget {
         bool isActive = state.selectedColor == Color;
         return InkWell(
           onTap: () {
-            print(Color); 
+            // print(Color);
             bottomNavBarCubit.changeSelectedColor(Color);
+            SaveSchedular.saveSchedular('color', Color);
           },
           child: Stack(
             children: [

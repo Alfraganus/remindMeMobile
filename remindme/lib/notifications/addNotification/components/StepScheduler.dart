@@ -25,9 +25,11 @@ class _SchedularState extends State<StepSchedular> {
           children: [
             RepeatDaily(),
             SizedBox(height: 20),
-            MultpleDateChooser(),
-            SizedBox(height: 20),
-            MultipleWeekDateChooser(),
+            if (state.isEveryday == true) ...[
+              MultpleDateChooser(),
+              SizedBox(height: 20),
+              MultipleWeekDateChooser(),
+            ],
             SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,18 +233,13 @@ class MultpleDateChooser extends StatelessWidget {
             );
             // FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Row(
-            children: [
-              Text("Tanlash"),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Icon(
-                  Icons.calendar_month_outlined,
-                  size: 40,
-                  color: Colors.green,
-                ),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Icon(
+              Icons.calendar_month_outlined,
+              size: 40,
+              color: Colors.green,
+            ),
           ),
         ),
       ],
@@ -311,18 +308,13 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
               },
             );
           },
-          child: Row(
-            children: [
-              Text("Tanlash"),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: Icon(
-                  Icons.calendar_month_outlined,
-                  size: 40,
-                  color: Colors.green,
-                ),
-              ),
-            ],
+          child : Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Icon(
+              Icons.calendar_month_outlined,
+              size: 40,
+              color: Colors.green,
+            ),
           ),
         ),
       ],
@@ -337,6 +329,8 @@ class RepeatDaily extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<EventFormCubit, EventForm>(
+  builder: (context, state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -347,22 +341,22 @@ class RepeatDaily extends StatelessWidget {
         ToggleSwitch(
           customWidths: [90.0, 50.0],
           cornerRadius: 20.0,
-          activeBgColors: [
-            [Colors.cyan],
-            [Colors.redAccent]
-          ],
-          activeFgColor: Colors.white,
-          inactiveBgColor: Colors.grey,
+          initialLabelIndex:state.isEveryday == 0 ? 1 : 0 ,
+          // activeFgColor: Colors.white,
+          inactiveBgColor: Colors.red,
           inactiveFgColor: Colors.white,
           totalSwitches: 2,
-          labels: ['XA', 'Yo\'q'],
+          labels: ['Yo\'q', 'XA'],
           // icons: [null, FontAwesomeIcons.times],
           onToggle: (index) {
+            BlocProvider.of<EventFormCubit>(context).remindEveryEveryDay(index!);
             print('switched to: $index');
           },
         ),
       ],
     );
+  },
+);
   }
 }
 
