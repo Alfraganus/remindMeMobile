@@ -21,19 +21,26 @@ class EventFormCubit extends Cubit<EventForm> {
     }
   }
 
-  void remindEveryEveryDay(int value) {
-    emit(EventForm(isEveryday: value == 0 ? true : false));
+  void changeToggle(int toggle, String isEveryday) {
+    emit(EventForm(toggleSwich: toggle, isEveryday: isEveryday));
+  }
+  void setDates(dates) {
+    emit(EventForm(calendarDates: dates));
   }
 }
 
 class EventForm {
   String? title;
   List<String?> dates;
-  bool? isEveryday;
+  String? isEveryday;
+  int toggleSwich;
+  List<DateTime>? calendarDates;
 
   EventForm({
     this.title = '', // Make it a const if it's a string literal.
+    this.toggleSwich = 0,
+    this.calendarDates,
     List<String?>? dates, // Use a nullable type for dates.
-    this.isEveryday = false, // Use a nullable type for dates.
+    this.isEveryday = '', // Use a nullable type for dates.
   }) : dates = dates ?? [];
 }

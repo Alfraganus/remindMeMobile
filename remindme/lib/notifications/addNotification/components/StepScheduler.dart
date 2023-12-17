@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:remindme/services/saveSchedularStepper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:weekday_selector/weekday_selector.dart';
@@ -25,7 +26,7 @@ class _SchedularState extends State<StepSchedular> {
           children: [
             RepeatDaily(),
             SizedBox(height: 20),
-            if (state.isEveryday == true) ...[
+            if (state.isEveryday == 'no') ...[
               MultpleDateChooser(),
               SizedBox(height: 20),
               MultipleWeekDateChooser(),
@@ -192,6 +193,8 @@ class MultpleDateChooser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<EventFormCubit, EventForm>(
+  builder: (context, state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -211,22 +214,25 @@ class MultpleDateChooser extends StatelessWidget {
                       height: 400, // Adjust the height as needed
                       width: MediaQuery.of(context).size.width, // Set a fixed width
                       child: SfDateRangePicker(
+                        initialSelectedDates: state.calendarDates,
                         view: DateRangePickerView.month,
                         selectionMode: DateRangePickerSelectionMode.multiple,
                         onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
                           // Handle date selection changes if needed
-                          print(args.value);
+                          // SaveSchedular.saveSchedular('oraliq_dates', args.value);
+                          context.read<EventFormCubit>().setDates(args.value);
+                          print(args.value.runtimeType);
                         },
                       ),
                     ),
-                    ElevatedButton(
+              /*      ElevatedButton(
                       onPressed: () {
                         // Handle button press
                       },
                       child: Text("Choose the days", style: TextStyle(
                           color: Colors.white
                       ),),
-                    ),
+                    ),*/
                   ],
                 );
               },
@@ -244,6 +250,8 @@ class MultpleDateChooser extends StatelessWidget {
         ),
       ],
     );
+  },
+);
   }
 
 }
@@ -341,16 +349,25 @@ class RepeatDaily extends StatelessWidget {
         ToggleSwitch(
           customWidths: [90.0, 50.0],
           cornerRadius: 20.0,
-          initialLabelIndex:state.isEveryday == 0 ? 1 : 0 ,
-          // activeFgColor: Colors.white,
-          inactiveBgColor: Colors.red,
+          initialLabelIndex:state.toggleSwich,
+          activeFgColor: Colors.white,
+          activeBgColors: [
+            [Colors.red],
+            [Colors.green],
+          ],
+          // inactiveBgColor: Colors.red,
           inactiveFgColor: Colors.white,
           totalSwitches: 2,
           labels: ['Yo\'q', 'XA'],
           // icons: [null, FontAwesomeIcons.times],
           onToggle: (index) {
-            BlocProvider.of<EventFormCubit>(context).remindEveryEveryDay(index!);
-            print('switched to: $index');
+            int changeToggle = index!;
+            String val = index == 0 ? 'no' : 'yes';
+            BlocProvider.of<EventFormCubit>(context).changeToggle(changeToggle,val);
+            if(val == 'yes') {
+              SaveSchedular.saveSchedular('is_everyday', 'yes');
+            }
+            print(val);
           },
         ),
       ],
