@@ -202,6 +202,11 @@ class MultpleDateChooser extends StatelessWidget {
           "Oraliq kun tanlarda",
           style: TextStyle(fontSize: 18),
         ),
+        if (state.calendarDates != null && state.calendarDates!.isNotEmpty)
+          Icon(
+            Icons.done_outline_sharp,
+            color: Colors.green,
+          ),
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
@@ -218,21 +223,12 @@ class MultpleDateChooser extends StatelessWidget {
                         view: DateRangePickerView.month,
                         selectionMode: DateRangePickerSelectionMode.multiple,
                         onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                          // Handle date selection changes if needed
-                          // SaveSchedular.saveSchedular('oraliq_dates', args.value);
                           context.read<EventFormCubit>().setDates(args.value);
-                          print(args.value.runtimeType);
+                          print(state.calendarDates);
                         },
                       ),
                     ),
-              /*      ElevatedButton(
-                      onPressed: () {
-                        // Handle button press
-                      },
-                      child: Text("Choose the days", style: TextStyle(
-                          color: Colors.white
-                      ),),
-                    ),*/
+
                   ],
                 );
               },
@@ -271,6 +267,8 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<EventFormCubit, EventForm>(
+  builder: (context, state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -278,6 +276,11 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
           "Xafta kunlarida",
           style: TextStyle(fontSize: 18),
         ),
+        if (state.weekDays != null && state.weekDays!.isNotEmpty)
+          Icon(
+            Icons.done_outline_sharp,
+            color: Colors.green,
+          ),
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
@@ -293,8 +296,9 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
                           child: WeekdaySelector(
                             onChanged: (int day) {
                               setState(() {
-                                final index = day % 7;
+                                int index = day % 7;
                                 values[index] = !values[index];
+                                context.read<EventFormCubit>().setWeekDays(index);
                               });
                             },
                             values: values,
@@ -327,6 +331,8 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
         ),
       ],
     );
+  },
+);
   }
 }
 
