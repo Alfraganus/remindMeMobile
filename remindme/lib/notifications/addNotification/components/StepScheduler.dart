@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:remindme/bloc/EventFormCalendarCubit.dart';
+import 'package:remindme/bloc/EventFormTimeCubit.dart';
+import 'package:remindme/bloc/EventFormWeekCubit.dart';
 import 'package:remindme/services/saveSchedularStepper.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:toggle_switch/toggle_switch.dart';
@@ -32,159 +35,185 @@ class _SchedularState extends State<StepSchedular> {
               MultipleWeekDateChooser(),
             ],
             SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Yangi vaqt kiritish",
-                      style: TextStyle(fontSize: 25),
-                    )),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: GestureDetector(
-                    onTap: () async {
-                      var time = await showTimePicker(
-                        context: context,
-                        initialTime: TimeOfDay.now(),
-                        builder: (context, child) {
-                          return Theme(
-                            data: Theme.of(context).copyWith(
-                              // This uses the _timePickerTheme defined above
-                              timePickerTheme: _timePickerTheme,
-                              textButtonTheme: TextButtonThemeData(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateColor.resolveWith(
-                                          (states) => Colors.orange),
-                                  foregroundColor:
-                                      MaterialStateColor.resolveWith(
-                                          (states) => Colors.white),
-                                  overlayColor: MaterialStateColor.resolveWith(
-                                      (states) => Colors.deepOrange),
-                                ),
-                              ),
-                            ),
-                            child: child!,
-                          );
-                        },
-                      );
-                      if (time != null) {
-                        List<String?>? currentList = state.dates;
-                        currentList.add(time.hour.toString() +
-                            " : " +
-                            time.minute.toString());
-                        BlocProvider.of<EventFormCubit>(context)
-                            .setNewTime(currentList);
-                      }
-                    },
-                    child: Icon(
-                      Icons.add_circle,
-                      color: Colors.green,
-                      size: 60.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: state.dates.length,
-                itemBuilder: (context, index) {
-                  int timeOrder = index + 1;
-                  var date = state.dates[index] ??
-                      'N/A'; // Provide a default value if null
-                  return Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      children: [
-                        Stack(
-                          children: [
-                            Container(
-                              height: 60,
-                              decoration: new BoxDecoration(
-                                color: HexColor("#24A19C"),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(15.0),
-                                  topRight: Radius.circular(
-                                      15.0), // Adjust the radius as needed
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    '${timeOrder}-vaqt',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          children: [
-                            VerticalDivider(width: 2.0),
-                            Expanded(
-                              child: Container(
-                                width: 100,
-                                // color: HexColor('#24A19C'),
-                                child: BlocBuilder<EventFormCubit, EventForm>(
-                                  builder: (context, state) {
-                                    return Padding(
-                                      padding: EdgeInsets.only(left: 15),
-                                      child: Text(
-                                        date,
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                BlocProvider.of<EventFormCubit>(context)
-                                    .removeTimeByIndex(index);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 20),
-                                child: Icon(
-                                  Icons.remove_circle,
-                                  color: Colors.red,
-                                  size: 35.0,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Divider(color: Colors.black12),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            )
+            TimeList(),
           ],
         );
       },
     );
   }
 }
+
+class TimeList extends StatelessWidget {
+  const TimeList({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<EventFormTimeCubit, EventFormTime>(
+  builder: (context, state) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "Yangi vaqt kiritish",
+                  style: TextStyle(fontSize: 25),
+                )),
+            Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () async {
+                  var time = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay.now(),
+                    builder: (context, child) {
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          // This uses the _timePickerTheme defined above
+                          timePickerTheme: _timePickerTheme,
+                          textButtonTheme: TextButtonThemeData(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateColor.resolveWith(
+                                      (states) => Colors.orange),
+                              foregroundColor:
+                                  MaterialStateColor.resolveWith(
+                                      (states) => Colors.white),
+                              overlayColor: MaterialStateColor.resolveWith(
+                                  (states) => Colors.deepOrange),
+                            ),
+                          ),
+                        ),
+                        child: child!,
+                      );
+                    },
+                  );
+                  if (time != null) {
+                    List<String?>? currentList = state.dates;
+                    currentList.add(time.hour.toString() +
+                        " : " +
+                        time.minute.toString());
+                    BlocProvider.of<EventFormCubit>(context)
+                        .setNewTime(currentList);
+                  }
+                },
+                child: Icon(
+                  Icons.add_circle,
+                  color: Colors.green,
+                  size: 60.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 20),
+        Container(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: state.dates.length,
+            itemBuilder: (context, index) {
+              int timeOrder = index + 1;
+              var date = state.dates[index] ??
+                  'N/A'; // Provide a default value if null
+              return Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          height: 60,
+                          decoration: new BoxDecoration(
+                            color: HexColor("#24A19C"),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              topRight: Radius.circular(
+                                  15.0), // Adjust the radius as needed
+                            ),
+                          ),
+                        ),
+                        Positioned.fill(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 15),
+                              child: Text(
+                                '${timeOrder}-vaqt',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 20),
+                    Row(
+                      children: [
+                        VerticalDivider(width: 2.0),
+                        Expanded(
+                          child: Container(
+                            width: 100,
+                            // color: HexColor('#24A19C'),
+                            child: BlocBuilder<EventFormTimeCubit, EventFormTime>(
+                              builder: (context, state) {
+                                return Padding(
+                                  padding: EdgeInsets.only(left: 15),
+                                  child: Text(
+                                    date,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            BlocProvider.of<EventFormTimeCubit>(context)
+                                .removeTimeByIndex(index);
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 20),
+                            child: Icon(
+                              Icons.remove_circle,
+                              color: Colors.red,
+                              size: 35.0,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Divider(color: Colors.black12),
+                  ],
+                ),
+              );
+            },
+          ),
+        )
+
+      ],
+    );
+  },
+);
+  }
+}
+
+
+
+
+
 
 class MultpleDateChooser extends StatelessWidget {
   const MultpleDateChooser({
@@ -193,7 +222,7 @@ class MultpleDateChooser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EventFormCubit, EventForm>(
+    return BlocBuilder<EventFormCalendarCubit, EventFormCalendar>(
   builder: (context, state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -223,7 +252,7 @@ class MultpleDateChooser extends StatelessWidget {
                         view: DateRangePickerView.month,
                         selectionMode: DateRangePickerSelectionMode.multiple,
                         onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                          context.read<EventFormCubit>().setDates(args.value);
+                          context.read<EventFormCalendarCubit>().setDates(args.value);
                           print(state.calendarDates);
                         },
                       ),
@@ -252,7 +281,6 @@ class MultpleDateChooser extends StatelessWidget {
 
 }
 
-
 class MultipleWeekDateChooser extends StatefulWidget {
   const MultipleWeekDateChooser({
     Key? key,
@@ -267,7 +295,7 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EventFormCubit, EventForm>(
+    return BlocBuilder<EventFormWeekCubit, EventFormWeek>(
   builder: (context, state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -276,7 +304,7 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
           "Xafta kunlarida",
           style: TextStyle(fontSize: 18),
         ),
-        if (state.weekDays != null && state.weekDays!.isNotEmpty)
+        if (state.weekListBool.any((bool value) => value))
           Icon(
             Icons.done_outline_sharp,
             color: Colors.green,
@@ -295,13 +323,9 @@ class _MultipleWeekDateChooserState extends State<MultipleWeekDateChooser> {
                           width: MediaQuery.of(context).size.width,
                           child: WeekdaySelector(
                             onChanged: (int day) {
-                              setState(() {
-                                int index = day % 7;
-                                values[index] = !values[index];
-                                context.read<EventFormCubit>().setWeekDays(index);
-                              });
+                              context.read<EventFormWeekCubit>().setWeekDays(day);
                             },
-                            values: values,
+                            values: state.weekListBool,
                           ),
                         ),
                         ElevatedButton(
@@ -382,10 +406,6 @@ class RepeatDaily extends StatelessWidget {
 );
   }
 }
-
-
-
-
 
 final _timePickerTheme = TimePickerThemeData(
   backgroundColor: Colors.blueGrey,

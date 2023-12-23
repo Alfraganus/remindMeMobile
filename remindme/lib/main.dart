@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remindme/bloc/BottomNavBarCubit.dart';
 import 'package:remindme/bloc/EventFormCubit.dart';
+import 'package:remindme/bloc/EventFormTimeCubit.dart';
+import 'package:remindme/bloc/EventFormWeekCubit.dart';
 import 'package:remindme/bloc/test_cubit.dart';
 import 'package:remindme/l10n/l10n.dart';
 import 'package:remindme/routes/app_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'bloc/ColorChooserCubit.dart';
+import 'bloc/EventFormCalendarCubit.dart';
 import 'constants.dart';
 import 'login/Screens/Welcome/welcome_screen.dart';
 
@@ -36,6 +39,15 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<EventFormCubit>(
           create: (context) => EventFormCubit(),
+        ),
+        BlocProvider<EventFormCalendarCubit>(
+          create: (context) => EventFormCalendarCubit(),
+        ),
+        BlocProvider<EventFormWeekCubit>(
+          create: (context) => EventFormWeekCubit(),
+        ),
+        BlocProvider<EventFormTimeCubit>(
+          create: (context) => EventFormTimeCubit(),
         ),
         // Add more BlocProviders as needed
       ],
