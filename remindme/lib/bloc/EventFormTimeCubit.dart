@@ -11,6 +11,7 @@ class EventFormTimeCubit extends Cubit<EventFormTime> {
     if (index >= 0 && index < state.dates.length) {
       List<String?> updatedDates = List.from(state.dates);
       updatedDates.removeAt(index);
+      SaveSchedular.saveSchedular('is_everyday', updatedDates);
       emit(EventFormTime(dates: updatedDates));
     }
   }

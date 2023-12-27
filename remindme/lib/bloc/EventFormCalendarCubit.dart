@@ -8,7 +8,7 @@ class EventFormCalendarCubit extends Cubit<EventFormCalendar> {
 
   void setDates(dates) {
     emit(EventFormCalendar(calendarDates: dates));
-    // SaveSchedular.saveSchedular('oraliq_dates', state.calendarDates.toString());
+    SaveSchedular.saveSchedular('oraliq_dates', state.calendarDates);
   }
 
 

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:remindme/bloc/EventFormCubit.dart';
 import 'package:remindme/notifications/addNotification/components/StepColor.dart';
 import 'package:remindme/notifications/addNotification/components/StepTaskTitle.dart';
+import 'package:remindme/services/saveSchedularStepper.dart';
 import '../../bloc/ColorChooserCubit.dart';
 import 'components/StepScheduler.dart';
 
@@ -33,7 +34,7 @@ class _AddNotificationState extends State<AddNotification> {
       }
     }
     if (currentStep == 2) {
-      print(123);
+      SaveSchedular.send();
     }
     setState(() {
       if (stepForward) {
