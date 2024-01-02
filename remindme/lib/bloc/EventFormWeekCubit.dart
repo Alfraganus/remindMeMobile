@@ -8,7 +8,7 @@ class EventFormWeekCubit extends Cubit<EventFormWeek> {
   void setWeekDays(day) {
       int index = day % 7;
       state.weekListBool[index] = !state.weekListBool[index];
-      SaveSchedular.saveSchedular('title', state.weekListBool);
+      SaveSchedular.saveSchedular('week_days', state.weekListBool);
       emit(EventFormWeek(weekListBool:state.weekListBool));
   }
 }

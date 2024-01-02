@@ -37,17 +37,19 @@ class SaveSchedular {
       'color': prefs.getString('color'),
       'title': prefs.getString('title'),
       'is_everyday': prefs.getString('is_everyday'),
-      'oraliq_dates': prefs.getStringList('oraliq_dates'),
-      'week_days': prefs.getStringList('week_days'),
-      'times': prefs.getStringList('times'),
+      'oraliq_dates': prefs.getStringList('oraliq_dates') ?? [],
+      'week_days': prefs.getStringList('week_days') ?? [],
+      'times': prefs.getStringList('times') ?? [],
     };
+
     return specialKeys;
   }
 
   static void send() async {
     Map<String, dynamic> specialKeys = await values();
-
-    final url = Uri.parse("http://127.0.0.1:8000/create-solo-todo");
+    print(specialKeys);
+/*
+    final url = Uri.parse("https://new.spector77.uz/create-notification");
 
     specialKeys.forEach((key, value) {
       if (value is Function) {
@@ -66,7 +68,7 @@ class SaveSchedular {
     if (response.statusCode == 200) {
       print("Data sent successfully");
     } else {
-      print("Failed to send data. Status code: ${response.statusCode}");
-    }
+      print("Failed to send data.  ${response.body}");
+    }*/
   }
 }

@@ -66,7 +66,7 @@ class _AddNotificationState extends State<AddNotification> {
       type: StepperType.horizontal,
       physics:AlwaysScrollableScrollPhysics(),
       // margin: EdgeInsets.zero,
-      currentStep: currentStep,
+      currentStep: /*currentStep*/2,
       onStepContinue: continueStep,
       onStepCancel: stepStep,
       onStepTapped:onStepTapped,

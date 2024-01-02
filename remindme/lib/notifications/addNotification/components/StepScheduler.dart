@@ -254,6 +254,7 @@ class MultpleDateChooser extends StatelessWidget {
                         onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
                           context.read<EventFormCalendarCubit>().setDates(args.value);
                           print(state.calendarDates);
+                          // print(args.value.runtimeType);
                         },
                       ),
                     ),
